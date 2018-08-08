@@ -115,7 +115,7 @@ public class PercolationStats {
                 perc.open(row, col);
                 openSites++;
             }
-        } while(!perc.percolates());
+        } while (!perc.percolates());
 
         return (double) openSites / ((double) size * size);
     }
