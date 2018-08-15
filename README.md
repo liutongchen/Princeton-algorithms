@@ -1,3 +1,4 @@
 # Princeton-algorithms
 
-Practices for the course Algorithms given by Princeton University
+My exercises for the course *Algorithms* given by Princeton University. Detailed assignment requirements and descriptions 
+are included in each assignment folder.
