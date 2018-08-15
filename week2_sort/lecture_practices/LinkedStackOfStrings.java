@@ -20,7 +20,6 @@ public class LinkedStackOfStrings {
     public String pop() {
         String popedItem = first.item;
         first = first.next;
-
         return popedItem;
     }
 
