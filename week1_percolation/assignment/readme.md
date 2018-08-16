@@ -14,5 +14,8 @@ The constructor should take time proportional to n2; all methods should take con
 
 Estimate the percolation threshold.
 
+## Score
+
+100/100
 
 
