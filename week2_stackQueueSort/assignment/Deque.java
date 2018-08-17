@@ -1,8 +1,8 @@
 /**
  * Created by Liutong Chen on 08/15/2018
  */
-
-import java.util.*;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class Deque<Item> implements Iterable<Item> {
     private Node first;
@@ -12,6 +12,7 @@ public class Deque<Item> implements Iterable<Item> {
     private class Node {
         Item item;
         Node next;
+        Node prev;
     }
 
     private class DequeIterator implements Iterator<Item> {
@@ -45,7 +46,10 @@ public class Deque<Item> implements Iterable<Item> {
         }
     }
 
-
+    private void reduceSize() {
+        assertNotEmpty();
+        size -= 1;
+    }
 
     /**
      * Construct an empty deque
@@ -82,6 +86,11 @@ public class Deque<Item> implements Iterable<Item> {
         first = new Node();
         first.item = item;
         first.next = oldFirst;
+        if (size == 1) {
+            last = first;
+        } else {
+            oldFirst.prev = first;
+        }
     }
 
     /**
@@ -95,7 +104,12 @@ public class Deque<Item> implements Iterable<Item> {
         last = new Node();
         last.item = item;
         last.next = null;
-        oldLast.next = last;
+        last.prev = oldLast;
+        if (size == 1) {
+            first = last;
+        } else {
+            oldLast.next = last;
+        }
     }
 
     /**
@@ -103,11 +117,15 @@ public class Deque<Item> implements Iterable<Item> {
      * @return
      */
     public Item removeFirst() {
-        assertNotEmpty();
-        size -= 1;
-        Node oldFirst = first;
-        first = first.next;
-        return oldFirst.item;
+        reduceSize();
+        Item firstItem = first.item;
+        if (size == 0) {
+            first = last = null;
+        } else {
+            first = first.next;
+            first.prev = null;
+        }
+        return firstItem;
     }
 
     /**
@@ -115,11 +133,15 @@ public class Deque<Item> implements Iterable<Item> {
      * @return
      */
     public Item removeLast() {
-        assertNotEmpty();
-        size -= 1;
-        Node oldLast = last;
-        last = null;
-        return oldLast.item;
+        reduceSize();
+        Item lastItem = last.item;
+        if (size == 0) {
+            first = last = null;
+        } else {
+            last = last.prev;
+            last.next = null;
+        }
+        return lastItem;
     }
 
     /**
@@ -127,11 +149,60 @@ public class Deque<Item> implements Iterable<Item> {
      * @return
      */
     public Iterator<Item> iterator() {
-
+        return new DequeIterator();
     }
 
-
+    /**
+     * Unit testing
+     * @param args
+     */
     public static void main(String[] args) {
+        // test strings
+//        Deque<String> stringDeque = new Deque<>();
+//        if (stringDeque.isEmpty()) {
+//            // test add
+//            for (int i = 0; i < 5; i++) {
+//                stringDeque.addFirst("ADD_FIRST_" + Integer.toString(i));
+//                stringDeque.addLast("ADD_LAST_" + Integer.toString(i));
+//            }
+//        }
+//
+//        // test iterator
+//        for (String item : stringDeque) {
+//            System.out.println("ITEM: " + item);
+//        }
+//
+//        if (!stringDeque.isEmpty()) {
+//            // test remove
+//            for (int i = 0; i < 5; i++) {
+//                System.out.println("REMOVE_FIRST_" + stringDeque.removeFirst() + "---------");
+//                System.out.println("REMOVE_Last_" + stringDeque.removeLast() + "---------");
+//            }
+//        }
+//        System.out.println("size: " + stringDeque.size());
 
+        // test int
+        Deque<Integer> integerDeque = new Deque<>();
+        if (integerDeque.isEmpty()) {
+            // test add
+            for (int i = 0; i < 5; i++) {
+                integerDeque.addFirst(i);
+                integerDeque.addLast(i + 5);
+            }
+        }
+
+        // test iterator
+        for (Integer item : integerDeque) {
+            System.out.println("ITEM: " + item);
+        }
+
+        if (!integerDeque.isEmpty()) {
+            // test remove
+            for (int i = 0; i < 5; i++) {
+                System.out.println("REMOVE_FIRST_" + integerDeque.removeFirst() + "---------");
+                System.out.println("REMOVE_Last_" + integerDeque.removeLast() + "---------");
+            }
+        }
+        System.out.println("size: " + integerDeque.size());
     }
 }
