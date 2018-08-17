@@ -120,7 +120,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     /**
      * Remove and return a random item
-     * @return
      */
     public Item dequeue() {
         assertQueueNotEmpty();
@@ -134,7 +133,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     /**
      * Return a random item (but do not remove it)
-     * @return
      */
     public Item sample() {
         assertQueueNotEmpty();
@@ -143,7 +141,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     /**
      * Return an independent iterator over items in random order
-     * @return
      */
     public Iterator<Item> iterator() {
         // randomly generate the start point
@@ -157,29 +154,29 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public static void main(String[] args) {
         int testSize = 5;
         // test string
-//        System.out.println("-------TEST STRING--------");
-//        RandomizedQueue<String> stringRandomizedQueue = new RandomizedQueue<>();
-//        for (int i = 0; i < testSize; i++) {
-//            // test enqueue
-//            stringRandomizedQueue.enqueue("ITEM_" + Integer.toString(i));
-//        }
-//
-//        for (int i = 0; i < testSize; i++) {
-//            // test sample
-//            System.out.println("Sample: " + stringRandomizedQueue.sample());
-//        }
-//
-//        // test iterator
-//        for (String item : stringRandomizedQueue) {
-//            System.out.println("item: " + item);
-//        }
-//
-//        while (!stringRandomizedQueue.isEmpty()) {
-//            // test dequeue
-//            System.out.println("Dequeue: " + stringRandomizedQueue.dequeue());
-//        }
-//
-//        System.out.println("Size: " + stringRandomizedQueue.size());
+        System.out.println("-------TEST STRING--------");
+        RandomizedQueue<String> stringRandomizedQueue = new RandomizedQueue<>();
+        for (int i = 0; i < testSize; i++) {
+            // test enqueue
+            stringRandomizedQueue.enqueue("ITEM_" + Integer.toString(i));
+        }
+
+        for (int i = 0; i < testSize; i++) {
+            // test sample
+            System.out.println("Sample: " + stringRandomizedQueue.sample());
+        }
+
+        // test iterator
+        for (String item : stringRandomizedQueue) {
+            System.out.println("item: " + item);
+        }
+
+        while (!stringRandomizedQueue.isEmpty()) {
+            // test dequeue
+            System.out.println("Dequeue: " + stringRandomizedQueue.dequeue());
+        }
+
+        System.out.println("Size: " + stringRandomizedQueue.size());
 
         // test int
         System.out.println("-------TEST INT--------");

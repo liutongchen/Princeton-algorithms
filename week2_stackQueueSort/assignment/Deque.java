@@ -61,7 +61,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     /**
      * Check if the deque is empty
-     * @return
+     * @return boolean
      */
     public boolean isEmpty() {
         return size == 0;
@@ -69,7 +69,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     /**
      * Return the number of items on the deque
-     * @return
+     * @return int
      */
     public int size() {
         return size;
@@ -114,7 +114,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     /**
      * Remove and return the item from the front
-     * @return
+     * @return the removed item
      */
     public Item removeFirst() {
         reduceSize();
@@ -130,7 +130,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     /**
      * Remove and return the item from the end
-     * @return
+     * @return the removed item
      */
     public Item removeLast() {
         reduceSize();
@@ -146,7 +146,6 @@ public class Deque<Item> implements Iterable<Item> {
 
     /**
      * Return an iterator over items in order from front to end
-     * @return
      */
     public Iterator<Item> iterator() {
         return new DequeIterator();
