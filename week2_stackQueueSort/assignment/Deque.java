@@ -158,30 +158,32 @@ public class Deque<Item> implements Iterable<Item> {
      */
     public static void main(String[] args) {
         // test strings
-//        Deque<String> stringDeque = new Deque<>();
-//        if (stringDeque.isEmpty()) {
-//            // test add
-//            for (int i = 0; i < 5; i++) {
-//                stringDeque.addFirst("ADD_FIRST_" + Integer.toString(i));
-//                stringDeque.addLast("ADD_LAST_" + Integer.toString(i));
-//            }
-//        }
-//
-//        // test iterator
-//        for (String item : stringDeque) {
-//            System.out.println("ITEM: " + item);
-//        }
-//
-//        if (!stringDeque.isEmpty()) {
-//            // test remove
-//            for (int i = 0; i < 5; i++) {
-//                System.out.println("REMOVE_FIRST_" + stringDeque.removeFirst() + "---------");
-//                System.out.println("REMOVE_Last_" + stringDeque.removeLast() + "---------");
-//            }
-//        }
-//        System.out.println("size: " + stringDeque.size());
+        System.out.println("------------TEST STRING---------");
+        Deque<String> stringDeque = new Deque<>();
+        if (stringDeque.isEmpty()) {
+            // test add
+            for (int i = 0; i < 5; i++) {
+                stringDeque.addFirst("ADD_FIRST_" + Integer.toString(i));
+                stringDeque.addLast("ADD_LAST_" + Integer.toString(i));
+            }
+        }
+
+        // test iterator
+        for (String item : stringDeque) {
+            System.out.println("ITEM: " + item);
+        }
+
+        if (!stringDeque.isEmpty()) {
+            // test remove
+            for (int i = 0; i < 5; i++) {
+                System.out.println("REMOVE_FIRST_" + stringDeque.removeFirst() + "---------");
+                System.out.println("REMOVE_Last_" + stringDeque.removeLast() + "---------");
+            }
+        }
+        System.out.println("size: " + stringDeque.size());
 
         // test int
+        System.out.println("------------TEST INT---------");
         Deque<Integer> integerDeque = new Deque<>();
         if (integerDeque.isEmpty()) {
             // test add
