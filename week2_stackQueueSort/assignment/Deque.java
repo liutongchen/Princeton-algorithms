@@ -9,6 +9,15 @@ public class Deque<Item> implements Iterable<Item> {
     private Node last;
     private int size;
 
+    /**
+     * Construct an empty deque
+     */
+    public Deque() {
+        size = 0;
+        first = null;
+        last = null;
+    }
+
     private class Node {
         Item item;
         Node next;
@@ -49,14 +58,6 @@ public class Deque<Item> implements Iterable<Item> {
     private void reduceSize() {
         assertNotEmpty();
         size -= 1;
-    }
-
-    /**
-     * Construct an empty deque
-     */
-    public Deque() {
-        size = 0;
-        first = last = null;
     }
 
     /**
@@ -120,7 +121,8 @@ public class Deque<Item> implements Iterable<Item> {
         reduceSize();
         Item firstItem = first.item;
         if (size == 0) {
-            first = last = null;
+            first = null;
+            last = null;
         } else {
             first = first.next;
             first.prev = null;
@@ -136,7 +138,8 @@ public class Deque<Item> implements Iterable<Item> {
         reduceSize();
         Item lastItem = last.item;
         if (size == 0) {
-            first = last = null;
+            first = null;
+            last = null;
         } else {
             last = last.prev;
             last.next = null;

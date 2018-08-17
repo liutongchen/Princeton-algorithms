@@ -11,6 +11,14 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     private int actualSize;
     private Item[] arr;
 
+    /**
+     * Construct an empty randomized queue
+     */
+    public RandomizedQueue() {
+        actualSize = 0;
+        arr = (Item[]) new Object[2];
+    }
+
     private void resize(int capacity) {
         Item[] newArr = (Item[]) new Object[capacity];
         for (int i = 0; i < actualSize; i++) {
@@ -49,7 +57,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         private RandomIterator() {
             copyQueue();
-            edu.princeton.cs.algs4.StdRandom.shuffle(randomArr);
+            StdRandom.shuffle(randomArr);
             curId = 0;
         }
 
@@ -83,13 +91,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     }
 
-    /**
-     * Construct an empty randomized queue
-     */
-    public RandomizedQueue() {
-        actualSize = 0;
-        arr = (Item[]) new Object[2];
-    }
 
     /**
      * Is the randomized queue empty?

@@ -24,4 +24,6 @@ Write a client program Permutation.java that takes an integer k as a command-lin
 The running time of Permutation must be linear in the size of the input. You may use only a constant amount of memory plus either one Deque or RandomizedQueue object of maximum size at most n. (For an extra challenge, use only one Deque or RandomizedQueue object of maximum size at most k.)
 
 
+#Score
 
+100/100
