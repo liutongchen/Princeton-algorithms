@@ -1,5 +1,11 @@
-import edu.princeton.cs.algs4.Selection;
+/**
+ * Created by Liutong Chen on 08/17/2018
+ */
 
+/**
+ * Selection sort is the first elementary sort introduced by the course.
+ * The following implementation takes T(n^2 / 2) -- quadratic
+ */
 public class SelectionSort {
     public static void sort(Comparable[] a) {
         int min;
