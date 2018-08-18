@@ -30,16 +30,4 @@ public class SelectionSort {
         a[i] = a[j];
         a[j] = swap;
     }
-
-    public static void main(String[] args) {
-        SelectionSort testSelectionSort = new SelectionSort();
-        Comparable[] arr = {5, 2, 9, 4};
-        for (int i = 0; i < arr.length; i++) {
-            System.out.println("BEFORE: " + arr[i]);
-        }
-        testSelectionSort.sort(arr);
-        for (int i = 0; i < arr.length; i++) {
-            System.out.println("AFTER: " + arr[i]);
-        }
-    }
 }
