@@ -2,6 +2,8 @@
  * Create by Liutong Chen on 08/17/2018
  */
 
+package elementarySort;
+
 /**
  * The following implementation takes T((1/4) * n^2) -- quadratic but twice as fast as selection sort.
  */

@@ -2,11 +2,13 @@
  * Created by Liutong Chen on 08/17/2018
  */
 
+package elementarySort;
 
 /**
- * Test results:
+ * The following test results:
  * Insertion sort works faster than selection sort in partially sorted array;
  * Selection sort works faster than selection sort in an array of descending order;
+ * Shell sort is more efficient than insertion sort and selection sort in all other cases except partiallySortedArr
  */
 public class TestSort {
     private static final Comparable[] randomArr = {5, 7, 3, 2, 4, 10, 1};
@@ -25,6 +27,7 @@ public class TestSort {
     private static void testDifferentSort(Comparable[] inp) {
         SelectionSort testSelectionSort = new SelectionSort();
         InsertionSort testInsertionSort = new InsertionSort();
+        ShellSort testShellSort = new ShellSort();
 
         System.out.println("-------SELECTION SORT------");
         Comparable[] SSArrayCopy = copyArray(inp);
@@ -44,6 +47,16 @@ public class TestSort {
         System.out.println(":::::TIME::::: " + (insertionSortEndTime - insertionSortStartTime));
         for (int i = 0; i < ISArrayCopy.length; i++) {
             System.out.println("AFTER: " + ISArrayCopy[i]);
+        }
+
+        System.out.println("-------SHELL SORT------");
+        Comparable[] SSLArrayCopy = copyArray(inp);
+        long shellSortStartTime = System.nanoTime();
+        testShellSort.sort(SSLArrayCopy);
+        long shellSortEndTime = System.nanoTime();
+        System.out.println(":::::TIME::::: " + (shellSortEndTime - shellSortStartTime));
+        for (int i = 0; i < ISArrayCopy.length; i++) {
+            System.out.println("AFTER: " + SSLArrayCopy[i]);
         }
     }
 
