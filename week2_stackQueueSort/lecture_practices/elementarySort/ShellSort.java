@@ -1,4 +1,12 @@
+/**
+ * Created by Liutong Chen on 08/22/2018
+ */
+
 package elementarySort;
+
+/**
+ * The worst-case number of compare used by shell sort with 3*h + 1 increments is O(N ** 3/2)
+ */
 
 public class ShellSort {
     public static void sort(Comparable[] a)
