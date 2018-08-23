@@ -50,6 +50,9 @@ class MergeSort<Item> {
         assert isSorted(a, low, high);
     }
 
+    /**
+     * This is a recursive sort
+     */
     private static void sort(Comparable[] a, Comparable[] aux, int low, int high) {
         // TODO: USE INSERTION SORT FOR ARRAYS OF SMALLER SIZE AFTER IT'S CUT IN HALF
         if (high <= low) return;
@@ -60,8 +63,26 @@ class MergeSort<Item> {
         merge(a, aux, low, mid, high);
     }
 
-    public static void sort(Comparable[] a) {
-        Comparable[] aux = new Comparable[a.length];
-        sort(a, aux, 0, a.length - 1);
+    /**
+     * This is a bottom-up sort.
+     */
+    private static void sort(Comparable[] a) {
+        int N = a.length;
+        Comparable[] aux = new Comparable[N];
+        for (int sz = 1; sz < N; sz *= 2) {
+            for (int low = 0; low < N - sz; low += sz * 2) {
+                merge(a, aux, low, low + sz - 1, Math.min(low + sz * 2 - 1, N - 1));
+            }
+        }
+    }
+
+    public static void sort(Comparable[] a, Boolean isRecusive) {
+        if (isRecusive) {
+            Comparable[] aux = new Comparable[a.length];
+            sort(a, aux, 0, a.length - 1);
+        } else {
+            sort(a);
+        }
+
     }
 }
