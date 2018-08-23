@@ -3,7 +3,9 @@
  */
 
 /**
- * O(N * logN)
+ * O(N * lgN)
+ * Stability: Merge sort and insertion sort are stable and selection sort and shell sort are unstable because they might
+ * change the order of equal items by doing long-distance exchange.
  * @param <Item>
  */
 class MergeSort<Item> {
