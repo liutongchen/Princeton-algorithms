@@ -43,10 +43,10 @@ class MergeSort<Item> {
         int j = mid + 1;
 
         for (int k = low; k <= high; k++) {
-            if (i > mid) aux[k] = a[j++];
-            else if (j > high) aux[k] = a[i++];
-            else if (less(a[i], a[j])) aux[k] = a[i++];
-            else aux[k] = a[j++];
+            if (i > mid) a[k] = aux[j++];
+            else if (j > high) a[k] = aux[i++];
+            else if (less(a[i], a[j])) a[k] = aux[i++];
+            else a[k] = aux[j++];
         }
 
         assert isSorted(a, low, high);
