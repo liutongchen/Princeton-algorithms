@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class FastCollinearPoints {
-    private int segmentsnum = 0;
+    private int segmentsNum = 0;
     private LineSegment[] lineSegments;
 
     /**
@@ -54,7 +54,7 @@ public class FastCollinearPoints {
             if (count == -1 || currentSlope != tempSlope) {
                 // beginning of each line segment
                 if (count >= 3) {
-                    lineSegments[segmentsnum++] = new LineSegment(origin, targets[i-1]);
+                    lineSegments[segmentsNum++] = new LineSegment(origin, targets[i-1]);
                 }
 
                 if (targets[i].compareTo(origin) < 0) {
@@ -80,7 +80,7 @@ public class FastCollinearPoints {
         }
 
         if (count >= 3) {
-            lineSegments[segmentsnum++] = new LineSegment(origin, targets[i-1]);
+            lineSegments[segmentsNum++] = new LineSegment(origin, targets[i-1]);
         }
     }
 
@@ -89,7 +89,7 @@ public class FastCollinearPoints {
      * @return
      */
     public int numberOfSegments() {
-        return segmentsnum;
+        return segmentsNum;
     }
 
     /**
@@ -97,6 +97,6 @@ public class FastCollinearPoints {
      * @return
      */
     public LineSegment[] segments() {
-        return Arrays.copyOfRange(lineSegments, 0, segmentsnum);
+        return Arrays.copyOfRange(lineSegments, 0, segmentsNum);
     }
 }

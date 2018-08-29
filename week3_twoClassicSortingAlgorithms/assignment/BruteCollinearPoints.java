@@ -7,7 +7,7 @@ import java.util.Comparator;
 
 public class BruteCollinearPoints {
     private int numberOfSegments = 0;
-    private LineSegment[] segmentsArr;
+    private final LineSegment[] segmentsArr;
 
     /**
      * Finds all line segmentsArr containing 4 points.
@@ -35,7 +35,7 @@ public class BruteCollinearPoints {
                         assertArgsValid(point1, point2);
                         assertArgsValid(point2, point3);
                         assertArgsValid(point3, point4);
-                        if (point4Id < n - 1) {
+                        if (point4Id + 1 < n) {
                             assertArgsValid(point4, copiedPoints[point4Id + 1]);
                         }
 
@@ -43,7 +43,8 @@ public class BruteCollinearPoints {
                         double slope1To3 = point1.slopeTo(point3);
                         double slope1To4 = point1.slopeTo(point4);
                         if (slope1To2 == slope1To3 && slope1To2 == slope1To4) {
-                            segmentsArr[numberOfSegments++] = new LineSegment(point1, point4);
+                            segmentsArr[numberOfSegments] = new LineSegment(point1, point4);
+                            numberOfSegments += 1;
                        }
                     }
                 }
@@ -68,9 +69,7 @@ public class BruteCollinearPoints {
     }
 
     private void assertArgsValid(Point curPoint, Point nextPoint) {
-        if (curPoint == null || nextPoint == null) {
-            throw new IllegalArgumentException();
-        } else if (curPoint.compareTo(nextPoint) == 0) {
+        if (curPoint == null || curPoint.compareTo(nextPoint) == 0) {
             throw new IllegalArgumentException();
         }
     }

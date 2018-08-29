@@ -24,4 +24,4 @@ The order of growth of the running time of your program should be n2 log n in th
 
 ## Score
 
-
+98/100
