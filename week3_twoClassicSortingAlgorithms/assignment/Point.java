@@ -75,7 +75,7 @@ public class Point implements Comparable<Point> {
         } else if (this.x == that.x) {
             return Double.POSITIVE_INFINITY;
         } else {
-            return (double)(that.y - this.y) / (double) (that.x - this.x);
+            return (double) (that.y - this.y) / (double) (that.x - this.x);
         }
     }
 
@@ -118,21 +118,5 @@ public class Point implements Comparable<Point> {
     public String toString() {
         /* DO NOT MODIFY */
         return "(" + x + ", " + y + ")";
-    }
-
-    /**
-     * Unit tests the Point data type.
-     */
-    public static void main(String[] args) {
-        /* YOUR CODE HERE */
-        Point point1 = new Point(1, 2);
-        Point point2 = new Point(-1, 4);
-        Point point3 = new Point(2, 3);
-        Point point4 = new Point(1, 3);
-
-        System.out.println(point1.compareTo(point2));
-        System.out.println(point1.compareTo(point4));
-
-        System.out.println(point3.slopeOrder().compare(point4, point2));
     }
 }
