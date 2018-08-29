@@ -65,7 +65,7 @@ public class QuickSort {
     }
 
     /**
-     * Recursively sort array
+     * Recursively sort array with distinct values.
      * @param a
      */
     private static void sort(Comparable[] a, int low, int high) {
@@ -73,6 +73,27 @@ public class QuickSort {
         int j = partition(a, low, high);
         sort(a, 0, j - 1);
         sort(a, j + 1, high);
+    }
+
+    /**
+     * 3-way quick sort for array with duplicate values.
+     * Values on the left of a[lt] is smaller than partition, between a[lt] and a[i] is the same, and right of a[gt] is greater than partition
+     */
+    private static void sort(Comparable[] a, int low, int high, boolean hasDuplicates) {
+        if (low >= high) return;
+        // lt - less than, gt - greater than
+        int lt = low;
+        int i = low;
+        int gt = high;
+        Comparable value = a[low];
+        while (i <= gt) {
+            int cmp = a[i].compareTo(value);
+            if (cmp < 0)        exch(a, lt++, i++);
+            else if (cmp > 0)   exch(a, i, gt--);
+            else                i++;
+        }
+        sort(a, low, lt - 1);
+        sort(a, gt + 1, high);
     }
 
     /**
@@ -85,18 +106,19 @@ public class QuickSort {
     }
 
     /**
-     * Select the Kth smallest element in a
+     * Select the Kth smallest element in a.
+     * The following algorithm takes linear time on average. O(N + 1/2N + 1/4N + ... + 1) ~ O(2N)
      */
     public static Comparable select(Comparable[] a, int k) {
         StdRandom.shuffle(a);
         int low = 0;
         int high = a.length - 1;
-        int j = partition(a, low, high);
         while (low < high) {
+            int j = partition(a, low, high);
             if (j < k) {
-                j = partition(a, j + 1, high);
+                low = j + 1;
             } else if (j > k) {
-                j = partition(a, low, j - 1);
+                high = j - 1;
             } else {
                 return a[k];
             }
