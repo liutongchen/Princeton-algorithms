@@ -12,51 +12,47 @@ public class FastCollinearPoints {
     private int segmentsNum = 0;
     private LineSegment[] lineSegments;
 
-    private boolean isSmallestPoint(double tempSlope, Point origin, Point[] leftPoints) {
-        int N = leftPoints.length;
-        if (N < 1) return true;
-        return (tempSlope != origin.slopeTo(leftPoints[leftPoints.length - 1]));
-    }
-
-    private void searchLeft(Point[] leftPoints, Point origin) {
-        int N = leftPoints.length;
-        if (N >= 3) {
-            double tempSlope = origin.slopeTo(leftPoints[0]);
-            int tempSameSlopeNum = 1;
-            for (int j = 1; j < N; j++) {
-                // find point on the left that has the equal slope to p
-                if (origin.slopeTo(leftPoints[j]) == tempSlope) {
-                    tempSameSlopeNum++;
-                } else {
-                    if (tempSameSlopeNum >= 3) {
-                        lineSegments[segmentsNum++] = new LineSegment(origin, leftPoints[j-1]);
-                    }
-                    tempSlope = origin.slopeTo(leftPoints[j]);
-                }
+    private void searchTarget(Point[] targets, Point origin) {
+        double tempSlope = 0;
+        int count = -1;
+        int i = 0;
+        int N = targets.length;
+        while (i < N) {
+            if (origin.compareTo(targets[i]) == 0) {
+                // skip origin itself
+                i++;
+                continue;
             }
+
+            double currentSlope = origin.slopeTo(targets[i]);
+            if (count == -1 || currentSlope != tempSlope) {
+                if (count >= 3) {
+                    lineSegments[segmentsNum++] = new LineSegment(origin, targets[i-1]);
+                }
+
+                if (targets[i].compareTo(origin) < 0) {
+                    while (i < N && origin.slopeTo(targets[i]) == currentSlope) {
+                        i++;
+                    }
+
+                    count = -1;
+                    continue;
+                }
+
+                currentSlope = origin.slopeTo(targets[i]);
+                tempSlope = currentSlope;
+                count = 0;
+            }
+
+            if (currentSlope == tempSlope) {
+                count++;
+            }
+
+            i++;
         }
-    }
 
-    private void searchRight(Point[] rightPoints, Point[] leftPoints, Point origin) {
-        int N = rightPoints.length;
-        if (N >= 3) {
-            double tempSlope = origin.slopeTo(rightPoints[0]);
-            int tempSameSlopeNum = 1;
-            for (int j = 1; j < N; j++) {
-                // find point on the right that has the equal slope to p
-                if (origin.slopeTo(rightPoints[j]) == tempSlope) {
-                    tempSameSlopeNum++;
-                    if (j == N - 1 && tempSameSlopeNum >= 3 && isSmallestPoint(tempSlope, origin, leftPoints)) {
-                        // if last point is collinear
-                        lineSegments[segmentsNum++] = new LineSegment(origin, rightPoints[j]);
-                    }
-                } else {
-                    if (tempSameSlopeNum >= 3 && isSmallestPoint(tempSlope, origin, leftPoints)) {
-                        lineSegments[segmentsNum++] = new LineSegment(origin, rightPoints[j-1]);
-                    }
-                    tempSlope = origin.slopeTo(rightPoints[j]);
-                }
-            }
+        if (count >= 3) {
+            lineSegments[segmentsNum++] = new LineSegment(origin, targets[i-1]);
         }
     }
 
@@ -75,21 +71,17 @@ public class FastCollinearPoints {
         int N = points.length;
         lineSegments = new LineSegment[N];
 
-        // for each point p, sort by slope to this point
+        // for each point p, sort by slope to p
         for (int i = 0; i < N; i++) {
             Point origin = points[i];
             if (origin == null || (i < N - 1 && origin == points[i + 1])) {
                 throw new IllegalArgumentException();
             }
-            Point[] rightPoints = Arrays.copyOfRange(points, i + 1, N);
-            Point[] leftPoints = Arrays.copyOfRange(points, 0, i);
-            Arrays.sort(rightPoints, origin.slopeOrder());
-            Arrays.sort(leftPoints, origin.slopeOrder());
-            searchLeft(leftPoints, origin);
-            searchRight(rightPoints, leftPoints, origin);
+
+            Point[] targets = Arrays.copyOf(points, points.length);
+            Arrays.sort(targets, origin.slopeOrder());
+            searchTarget(targets, origin);
         }
-
-
     }
 
     /**
