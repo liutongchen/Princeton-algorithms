@@ -1,9 +1,16 @@
-import edu.princeton.cs.algs4.StdRandom;
-
-import java.util.Comparator;
-
 /**
  * Created by Liutong Chen on 08/29/2018
+ */
+
+import edu.princeton.cs.algs4.StdRandom;
+
+/**
+ * Best case: divide everything in half -- O(N * lgN)
+ * Worst case: everything is exactly in order -- O(~ 1/2 * N ^ 2)
+ * Average case: O(~ 2N * lnN) / O(1.39N * lgN) (number of compares), O(~1/3N * lnN) (number of exchanges)
+ * => 39% more compares than MergeSort but faster because of less data movement;
+ * => takes fewer space than MergeSort;
+ * => stable sort is harder to implement for QuickSort than MergeSort
  */
 
 public class QuickSort {
@@ -68,7 +75,6 @@ public class QuickSort {
 
     /**
      * Shuffle array before sorting it for performance guarantee.
-     * TODO: Figure out why shuffling is needed.
      * @param a
      */
     public static void sort(Comparable[] a) {
