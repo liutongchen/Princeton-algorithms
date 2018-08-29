@@ -1,3 +1,7 @@
+import edu.princeton.cs.algs4.StdRandom;
+
+import java.util.Comparator;
+
 /**
  * Created by Liutong Chen on 08/29/2018
  */
@@ -35,7 +39,7 @@ public class QuickSort {
      * @param w
      * @return
      */
-    public static boolean less(Comparable v, Comparable w) {
+    private static boolean less(Comparable v, Comparable w) {
         return v.compareTo(w) < 0;
     }
 
@@ -45,9 +49,30 @@ public class QuickSort {
      * @param i
      * @param j
      */
-    public static void exch(Comparable[] a, int i, int j) {
+    private static void exch(Comparable[] a, int i, int j) {
         Comparable swap = a[i];
         a[i] = a[j];
         a[j] = swap;
+    }
+
+    /**
+     * Recursively sort array
+     * @param a
+     */
+    private static void sort(Comparable[] a, int low, int high) {
+        if (low >= high) return;
+        int j = partition(a, low, high);
+        sort(a, 0, j - 1);
+        sort(a, j + 1, high);
+    }
+
+    /**
+     * Shuffle array before sorting it for performance guarantee.
+     * TODO: Figure out why shuffling is needed.
+     * @param a
+     */
+    public static void sort(Comparable[] a) {
+        StdRandom.shuffle(a);
+        sort(a, 0, a.length - 1);
     }
 }
