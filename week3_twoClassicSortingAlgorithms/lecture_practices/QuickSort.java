@@ -4,6 +4,8 @@
 
 import edu.princeton.cs.algs4.StdRandom;
 
+import java.util.Comparator;
+
 /**
  * Best case: divide everything in half -- O(N * lgN)
  * Worst case: everything is exactly in order -- O(~ 1/2 * N ^ 2)
@@ -80,5 +82,25 @@ public class QuickSort {
     public static void sort(Comparable[] a) {
         StdRandom.shuffle(a);
         sort(a, 0, a.length - 1);
+    }
+
+    /**
+     * Select the Kth smallest element in a
+     */
+    public static Comparable select(Comparable[] a, int k) {
+        StdRandom.shuffle(a);
+        int low = 0;
+        int high = a.length - 1;
+        int j = partition(a, low, high);
+        while (low < high) {
+            if (j < k) {
+                j = partition(a, j + 1, high);
+            } else if (j > k) {
+                j = partition(a, low, j - 1);
+            } else {
+                return a[k];
+            }
+        }
+        return a[k];
     }
 }
