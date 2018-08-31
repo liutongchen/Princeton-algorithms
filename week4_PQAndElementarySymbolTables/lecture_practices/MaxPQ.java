@@ -6,6 +6,13 @@ class MaxPQ<Key extends Comparable<Key>> {
     private Key[] priorityQueue;
     private int num;
 
+    public MaxPQ(int capacity) {
+        priorityQueue = (Key[]) new Comparable[capacity + 1];
+    }
+
+    public boolean isEmpty() {
+        return num == 0;
+    }
 
     public void insert(Key key) {
         priorityQueue[++num] = key; // increment before insert to make it start from one
@@ -14,12 +21,21 @@ class MaxPQ<Key extends Comparable<Key>> {
 
     public void sink(int k) {
         while (2 * k <= num) {
-            int biggerChild = 2 * k;
-            if (biggerChild < num && less(biggerChild, biggerChild + 1)) biggerChild++;
-            if (!less(k, biggerChild)) break;
-            exch(k, biggerChild);
-            k = biggerChild;
+            int j = 2 * k;
+            if (j < num && less(j, j + 1)) j++;
+            if (!less(k, j)) break;
+            exch(k, j);
+            k = j;
         }
+    }
+
+    public Key delMax() {
+        // TODO: THINK HOW TO REMOVE THE MINIMUM?
+        Key max = priorityQueue[1];
+        exch(1, num--);
+        priorityQueue[num+1] = null;
+        sink(1);
+        return max;
     }
 
     private void swim(int k) {
