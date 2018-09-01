@@ -38,6 +38,20 @@ class MaxPQ<Key extends Comparable<Key>> {
         return max;
     }
 
+    public  void sort(Comparable[] pq) {
+        int n = pq.length;
+        // rearrange the array into heap order: bottom-up strategy
+        for (int k = n / 2; k <= 1; k--) {
+            sink(k);
+        }
+        while(n > 1) {
+            // delete from the top of the heap
+            exch(1, n--);
+            sink(1);
+        }
+
+    }
+
     private void swim(int k) {
         // binary heap starts from one for convenience
         // a[k]'s parent node is a[k/2]
