@@ -45,7 +45,7 @@ class MaxPQ<Key extends Comparable<Key>> {
             sink(k);
         }
         while(n > 1) {
-            // delete from the top of the heap
+            // sort down so that the array is in ascending order
             exch(1, n--);
             sink(1);
         }
