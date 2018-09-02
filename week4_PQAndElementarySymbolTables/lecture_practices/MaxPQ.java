@@ -38,6 +38,14 @@ class MaxPQ<Key extends Comparable<Key>> {
         return max;
     }
 
+    /**
+     * Heap sort: in-place merge and O(NlogN) worst-case guarantee.
+     * Heap sort has its disadvantages as well:
+     * 1. Inner loop does more things than quicksort's
+     * 2. Makes poor use of cache memory
+     * 3. Not stable (long-distance exchanges)
+     * @param pq
+     */
     public  void sort(Comparable[] pq) {
         int n = pq.length;
         // rearrange the array into heap order: bottom-up strategy
