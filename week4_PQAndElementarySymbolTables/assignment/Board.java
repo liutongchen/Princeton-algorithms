@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * Created by Liutong Chen on 09/13/2018
@@ -108,25 +109,46 @@ public class Board {
      * @return
      */
     public Iterable<Board> neighbors() {
-
+        LinkedList<Board> neighbors = new LinkedList<Board>();
         for (int row = 0; row < this.dimension; row++) {
             for (int col = 0; col < this.dimension; col++) {
                 if (isSpace(block(row, col))) {
-                    Board top = row == 0 ? null : new Board(swap(row, col, row - 1, col));
-                    Board left = col == 0 ? null : new Board(swap(row, col, row, col - 1));
-                    Board right = col == this.dimension - 1 ? null : new Board(swap(row, col, row, col + 1));
-                    Board btm = row == this.dimension - 1 ? null : new Board(swap(row, col, row + 1, col + 1));
-                    break;
+                    if (row > 0) {
+                        // add top if exists
+                        neighbors.add(new Board(swap(row, col, row - 1, col)));
+                    }
+                    if (col > 0) {
+                        // add left if exists
+                        neighbors.add(new Board(swap(row, col, row, col - 1)));
+                    }
+                    if (col < this.dimension - 1) {
+                        // add right if exists
+                        neighbors.add(new Board(swap(row, col, row, col + 1)));
+                    }
+                    if (row < this.dimension - 1) {
+                        // add bottom if exists
+                        neighbors.add(new Board(swap(row, col, row + 1, col + 1)));
+                    }
+                    return neighbors;
                 }
             }
         }
+        throw new Error("No space found");
     }
 
     /**
      * String representation of this board (in the output format specified below)
      */
     public String toString() {
-
+        StringBuilder str = new StringBuilder();
+        str.append(this.dimension + "\n");
+        for (int row = 0; row < this.dimension; row++) {
+            for (int col = 0; col < this.dimension; col++) {
+                str.append(String.format("%2d ", block(row, col)));
+            }
+            str.append("\n");
+        }
+        return str.toString();
     }
 
     /**
@@ -134,7 +156,7 @@ public class Board {
      * @param args
      */
     public static void main(String[] args) {
-        
+
     }
 
     // ---------- private functions -----------
