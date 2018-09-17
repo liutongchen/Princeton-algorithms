@@ -1,14 +1,21 @@
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * Created by Liutong Chen on 09/13/2018
  */
 
 public class Board {
+    private static final int space = 0;
+    private int dimension;
+    private int[][] board;
     /**
      * Construct a board from an n-by-n array of blocks (where blocks[i][j] = block in row i, column j)
      * @param blocks
      */
     public Board(int[][] blocks) {
-
+        this.board = blocks;
+        this.dimension = blocks.length;
     }          
 
     /**
@@ -16,7 +23,7 @@ public class Board {
      * @return
      */
     public int dimension() {
-
+        return dimension;
     }
 
     /**
@@ -24,7 +31,16 @@ public class Board {
      * @return
      */ 
     public int hamming() {
-
+        int count = 0;
+        for (int row = 0; row < this.dimension; row++) {
+            for (int col = 0; col < this.dimension; col++) {
+                int block = block(row, col);
+                if (!isSpace(block) && block != goalFor(row, col)) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     /**
@@ -32,7 +48,13 @@ public class Board {
      * @return
      */
     public int manhattan() {
-
+        int sum = 0;
+        for (int row = 0; row < this.dimension; row++) {
+            for (int col = 0; col < this.dimension; col++) {
+                sum += distance(row, col);
+            }
+        }
+        return sum;
     }
 
     /**
@@ -40,22 +62,45 @@ public class Board {
      * @return
      */
     public boolean isGoal() {
-
+        for (int row = 0; row < this.dimension; row++) {
+            for (int col = 0; col < this.dimension; col++) {
+                int block = block(row, col);
+                if (!isSpace(block) && block != goalFor(row, col)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
-     * A board that is obtained by exchanging any pair of blocks
+     * A board that is obtained by exchanging any pair of blocks.
+     * Assumption: only swap adjacent blocks on the same row.
      * @return
      */
     public Board twin() {
-
+        for (int row = 0; row < this.dimension; row++) {
+            for (int col = 0; col < this.dimension; col++) {
+                if (!isSpace(block(row, col)) && !isSpace(block(row, col + 1))) {
+                    return new Board(swap(row, col, row, col + 1));
+                }
+            }
+        }
+        throw new RuntimeException();
     }
 
     /**
      * Does this board equal y?
      */
     public boolean equals(Object y) {
-
+        if (y == this) return true;
+        if (y == null || !(y instanceof Board) || ((Board) y).dimension() != this.dimension ) return false;
+        for (int row = 0; row < this.dimension; row++) {
+            for (int col = 0; col < this.dimension; col++) {
+                if (((Board) y).board[row][col] != board[row][col]) return false; // TODO: Why can the private variable of y can be accessed here?
+            }
+        }
+        return true;
     } 
 
     /**
@@ -64,6 +109,17 @@ public class Board {
      */
     public Iterable<Board> neighbors() {
 
+        for (int row = 0; row < this.dimension; row++) {
+            for (int col = 0; col < this.dimension; col++) {
+                if (isSpace(block(row, col))) {
+                    Board top = row == 0 ? null : new Board(swap(row, col, row - 1, col));
+                    Board left = col == 0 ? null : new Board(swap(row, col, row, col - 1));
+                    Board right = col == this.dimension - 1 ? null : new Board(swap(row, col, row, col + 1));
+                    Board btm = row == this.dimension - 1 ? null : new Board(swap(row, col, row + 1, col + 1));
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -80,4 +136,74 @@ public class Board {
     public static void main(String[] args) {
         
     }
+
+    // ---------- private functions -----------
+    /**
+     * Return the goal for a single block
+     */
+    private int goalFor(int row, int col) {
+        return row * this.dimension + col + 1;
+    }
+
+    /**
+     * Check if a block is the space
+     */
+    private boolean isSpace(int block) {
+        return block == space;
+    }
+
+    /**
+     * Return the value of a certain block
+     */
+    private int block(int row, int col) {
+        return board[row][col];
+    }
+
+    /**
+     * Return the target row of a block
+     */
+    private int targetRow(int block) {
+        return (block - 1) / this.dimension;
+    }
+
+    /**
+     * Return the target col of a block
+     */
+    private int targetCol(int block) {
+        return (block - 1) % this.dimension;
+    }
+
+
+    /**
+     * Calculate the distance between a block and its goal position
+     */
+    private int distance(int row, int col) {
+        int block = block(row, col);
+        return isSpace(block) ? 0 : Math.abs(row - targetRow(block)) + Math.abs(col - targetCol(block));
+    }
+
+    /**
+     * Swap two blocks
+     */
+    private int[][] swap(int row1, int col1, int row2, int col2) {
+        int[][] copiedBoard = copy(board);
+        int temp = copiedBoard[row1][col1];
+        copiedBoard[row1][col1] = copiedBoard[row2][col2];
+        copiedBoard[row2][col2] = temp;
+        return copiedBoard;
+    }
+
+    /**
+     * Copy a board
+     */
+    private int[][] copy(int[][] board) {
+        int[][] copiedBoard = new int[this.dimension][this.dimension];
+        for (int row = 0; row < this.dimension; row++) {
+            for (int col = 0; col < this.dimension; col++) {
+                copiedBoard[row][col] = board[row][col];
+            }
+        }
+        return copiedBoard;
+    }
+
 }
