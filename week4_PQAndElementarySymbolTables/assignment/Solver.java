@@ -5,6 +5,9 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.MinPQ;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Stack;
 
 public class Solver {
@@ -102,6 +105,8 @@ public class Solver {
             solutionStack.push(lastMove.board);
             lastMove = lastMove.previous;
         }
+
+        Collections.reverse(solutionStack);
         return solutionStack;
     }
 

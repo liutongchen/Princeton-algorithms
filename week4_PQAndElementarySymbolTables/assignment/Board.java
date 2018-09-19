@@ -93,7 +93,7 @@ public class Board {
      */
     public boolean equals(Object y) {
         if (y == this) return true;
-        if (!y.getClass().equals(this.getClass()) || ((Board) y).dimension() != this.dimension) return false;
+        if (y == null || !y.getClass().equals(this.getClass()) || ((Board) y).dimension() != this.dimension) return false;
         for (int row = 0; row < this.dimension; row++) {
             for (int col = 0; col < this.dimension; col++) {
                 if (((Board) y).board[row][col] != board[row][col]) return false;
@@ -209,11 +209,11 @@ public class Board {
     /**
      * Copy a board
      */
-    private int[][] copy(int[][] board) {
+    private int[][] copy(int[][] originBoard) {
         int[][] copiedBoard = new int[this.dimension][this.dimension];
         for (int row = 0; row < this.dimension; row++) {
             for (int col = 0; col < this.dimension; col++) {
-                copiedBoard[row][col] = board[row][col];
+                copiedBoard[row][col] = originBoard[row][col];
             }
         }
         return copiedBoard;
@@ -222,7 +222,7 @@ public class Board {
     /**
      * Check if an index is within range
      */
-    private boolean isWithinRange(int index){
+    private boolean isWithinRange(int index) {
         return index < this.dimension;
     }
 }
