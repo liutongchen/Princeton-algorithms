@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -210,13 +208,8 @@ public class Board {
     private int[][] swap(int row1, int col1, int row2, int col2) {
         int[][] copiedBoard = copy(board);
         int temp = copiedBoard[row1][col1];
-        try {
-            copiedBoard[row1][col1] = copiedBoard[row2][col2];
-            copiedBoard[row2][col2] = temp;
-        } catch(Error e) {
-            int test1 = copiedBoard[row1][col1];
-            int test2 = copiedBoard[row2][col2];
-        }
+        copiedBoard[row1][col1] = copiedBoard[row2][col2];
+        copiedBoard[row2][col2] = temp;
 
         return copiedBoard;
     }
