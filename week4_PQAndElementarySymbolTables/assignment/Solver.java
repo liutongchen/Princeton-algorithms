@@ -5,8 +5,6 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.MinPQ;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Stack;
 
@@ -101,9 +99,14 @@ public class Solver {
     public Iterable<Board> solution() {
         if (!isSolvable()) return null;
         Stack<Board> solutionStack = new Stack<>();
-        while (lastMove != null) {
+        if (lastMove != null) {
             solutionStack.push(lastMove.board);
-            lastMove = lastMove.previous;
+            Move prev = lastMove.previous;
+
+            while (prev != null) {
+                solutionStack.push(prev.board);
+                prev = prev.previous;
+            }
         }
 
         Collections.reverse(solutionStack);
