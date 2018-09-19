@@ -82,7 +82,7 @@ public class Board {
     public Board twin() {
         for (int row = 0; row < this.dimension; row++) {
             for (int col = 0; col < this.dimension; col++) {
-                if (!isSpace(block(row, col)) && !isSpace(block(row, col + 1))) {
+                if (!isSpace(block(row, col)) && !isSpace(block(row, col + 1)) && isWithinRange(col + 1)) {
                     return new Board(swap(row, col, row, col + 1));
                 }
             }
@@ -98,7 +98,7 @@ public class Board {
         if (y == null || !(y instanceof Board) || ((Board) y).dimension() != this.dimension ) return false;
         for (int row = 0; row < this.dimension; row++) {
             for (int col = 0; col < this.dimension; col++) {
-                if (((Board) y).board[row][col] != board[row][col]) return false; // TODO: Why can the private variable of y can be accessed here?
+                if (((Board) y).board[row][col] != board[row][col]) return false;
             }
         }
         return true;
@@ -127,7 +127,7 @@ public class Board {
                     }
                     if (row < this.dimension - 1) {
                         // add bottom if exists
-                        neighbors.add(new Board(swap(row, col, row + 1, col + 1)));
+                        neighbors.add(new Board(swap(row, col, row + 1, col)));
                     }
                     return neighbors;
                 }
@@ -210,8 +210,14 @@ public class Board {
     private int[][] swap(int row1, int col1, int row2, int col2) {
         int[][] copiedBoard = copy(board);
         int temp = copiedBoard[row1][col1];
-        copiedBoard[row1][col1] = copiedBoard[row2][col2];
-        copiedBoard[row2][col2] = temp;
+        try {
+            copiedBoard[row1][col1] = copiedBoard[row2][col2];
+            copiedBoard[row2][col2] = temp;
+        } catch(Error e) {
+            int test1 = copiedBoard[row1][col1];
+            int test2 = copiedBoard[row2][col2];
+        }
+
         return copiedBoard;
     }
 
@@ -228,4 +234,10 @@ public class Board {
         return copiedBoard;
     }
 
+    /**
+     * Check if an index is within range
+     */
+    private boolean isWithinRange(int index){
+        return index < this.dimension;
+    }
 }

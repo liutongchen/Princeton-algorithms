@@ -5,53 +5,76 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.MinPQ;
 
-import java.util.Iterator;
+import java.util.Stack;
 
 public class Solver {
-    private MinPQ solutionPQ;
-    private int moves = 0;
     private class Move implements Comparable<Move> {
         private Board board;
+        private int moves = 0;
+        private Move previous;
+
         public Move(Board board) {
             this.board = board;
-
         }
-        public int compareTo(Move move) {
 
+        public Move(Board board, Move previous) {
+            this.previous = previous;
+            this.board = board;
+            this.moves = previous.moves + 1;
+        }
+
+        public int compareTo(Move move) {
+            return (this.board.manhattan() - move.board.manhattan()) + (this.moves - move.moves);
         }
     }
+
+    private Move lastMove;
+
     /**
      * Find a solution to the initial board (using the A* algorithm)
      * @param initial
      */
     public Solver(Board initial) {
-        // Create new Move with initial board
-        // add initial move to MinPQ
-        // if initial move is the goal: return moves = 0
-        // else:
-        // add all neighbors of initial moves to the PQ if not exist before
-        // loop: delMin() -- bestMove from PQ and check bestMove
+        if (initial == null) {
+            throw new IllegalArgumentException();
+        }
+
+        MinPQ<Move> minMovesPQ = new MinPQ<>();
+        minMovesPQ.insert(new Move(initial));
+
+        Move bestMove = minMovesPQ.delMin();
+        while (!bestMove.board.isGoal() && !minMovesPQ.isEmpty()) {
+            Iterable<Board> neighbors = bestMove.board.neighbors();
+            for (Board neighbor : neighbors) {
+                if (bestMove.previous == null || !neighbor.equals(bestMove.previous.board)) {
+                    minMovesPQ.insert(new Move(neighbor, bestMove));
+                }
+            }
+
+            bestMove = minMovesPQ.delMin();
+            this.lastMove = bestMove;
+        }
     }
 
     /**
      * Is the initial board solvable?
      */
     public boolean isSolvable() {
-
+        return this.lastMove != null;
     }            
 
     /**
      * Min number of moves to solve initial board; -1 if unsolvable
      */
     public int moves() {
-        
-    }                     
+        return isSolvable() ? this.solution.size() - 1 : -1;
+    }
 
     /**
      * Sequence of boards in a shortest solution; null if unsolvable
      */
     public Iterable<Board> solution() {
-
+        return this.solution;
     }
 
     /**
