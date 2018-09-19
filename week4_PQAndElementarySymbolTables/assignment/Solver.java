@@ -8,11 +8,13 @@ import edu.princeton.cs.algs4.MinPQ;
 import java.util.Stack;
 
 public class Solver {
+    private Move lastMove;
+
     private class Move implements Comparable<Move> {
-        private Board board;
+        private final Board board;
         private int moves = 0;
         private Move previous;
-        private int totalCost;
+        private final int totalCost;
 
         public Move(Board board) {
             this.board = board;
@@ -31,8 +33,6 @@ public class Solver {
             return this.totalCost - move.totalCost;
         }
     }
-
-    private Move lastMove;
 
     /**
      * Find a solution to the initial board (using the A* algorithm)

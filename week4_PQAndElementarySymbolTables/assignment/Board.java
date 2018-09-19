@@ -5,16 +5,16 @@ import java.util.LinkedList;
  */
 
 public class Board {
-    private static final int space = 0;
-    private int dimension;
-    private int[][] board;
+    private static final int SPACE = 0;
+    private final int dimension;
+    private final int[][] board;
     /**
      * Construct a board from an n-by-n array of blocks (where blocks[i][j] = block in row i, column j)
      * @param blocks
      */
     public Board(int[][] blocks) {
-        this.board = blocks;
         this.dimension = blocks.length;
+        this.board = copy(blocks);
     }          
 
     /**
@@ -80,7 +80,7 @@ public class Board {
     public Board twin() {
         for (int row = 0; row < this.dimension; row++) {
             for (int col = 0; col < this.dimension; col++) {
-                if (!isSpace(block(row, col)) && !isSpace(block(row, col + 1)) && isWithinRange(col + 1)) {
+                if (isWithinRange(col + 1) && !isSpace(block(row, col)) && !isSpace(block(row, col + 1))) {
                     return new Board(swap(row, col, row, col + 1));
                 }
             }
@@ -93,7 +93,7 @@ public class Board {
      */
     public boolean equals(Object y) {
         if (y == this) return true;
-        if (y == null || !(y instanceof Board) || ((Board) y).dimension() != this.dimension ) return false;
+        if (!y.getClass().equals(this.getClass()) || ((Board) y).dimension() != this.dimension) return false;
         for (int row = 0; row < this.dimension; row++) {
             for (int col = 0; col < this.dimension; col++) {
                 if (((Board) y).board[row][col] != board[row][col]) return false;
@@ -131,7 +131,7 @@ public class Board {
                 }
             }
         }
-        throw new Error("No space found");
+        throw new Error("No SPACE found");
     }
 
     /**
@@ -149,14 +149,6 @@ public class Board {
         return str.toString();
     }
 
-    /**
-     * Unit tests (not graded)
-     * @param args
-     */
-    public static void main(String[] args) {
-
-    }
-
     // ---------- private functions -----------
     /**
      * Return the goal for a single block
@@ -166,10 +158,10 @@ public class Board {
     }
 
     /**
-     * Check if a block is the space
+     * Check if a block is the SPACE
      */
     private boolean isSpace(int block) {
-        return block == space;
+        return block == SPACE;
     }
 
     /**
@@ -206,7 +198,7 @@ public class Board {
      * Swap two blocks
      */
     private int[][] swap(int row1, int col1, int row2, int col2) {
-        int[][] copiedBoard = copy(board);
+        int[][] copiedBoard = copy(this.board);
         int temp = copiedBoard[row1][col1];
         copiedBoard[row1][col1] = copiedBoard[row2][col2];
         copiedBoard[row2][col2] = temp;
