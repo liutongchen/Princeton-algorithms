@@ -12,19 +12,23 @@ public class Solver {
         private Board board;
         private int moves = 0;
         private Move previous;
+        private int totalCost;
 
         public Move(Board board) {
             this.board = board;
+            this.totalCost = this.board.manhattan() + this.moves;
         }
 
         public Move(Board board, Move previous) {
             this.previous = previous;
             this.board = board;
             this.moves = previous.moves + 1;
+            this.totalCost = this.board.manhattan() + this.moves;
+
         }
 
         public int compareTo(Move move) {
-            return (this.board.manhattan() - move.board.manhattan()) + (this.moves - move.moves);
+            return this.totalCost - move.totalCost;
         }
     }
 
@@ -39,21 +43,39 @@ public class Solver {
             throw new IllegalArgumentException();
         }
 
-        MinPQ<Move> minMovesPQ = new MinPQ<>();
-        minMovesPQ.insert(new Move(initial));
+        MinPQ<Move> movesPQ = new MinPQ<>();
+        movesPQ.insert(new Move(initial));
 
-        Move bestMove = minMovesPQ.delMin();
-        while (!bestMove.board.isGoal() && !minMovesPQ.isEmpty()) {
+        MinPQ<Move> twinMovesPQ = new MinPQ<>();
+        twinMovesPQ.insert(new Move(initial.twin()));
+
+        while (true) {
+            this.lastMove = expand(movesPQ);
+            if (lastMove != null || expand(twinMovesPQ) != null) return;
+        }
+
+    }
+
+    /**
+     * Expand the game tree.
+     * Return null if the queue is empty or goal is not reached
+     */
+    private Move expand(MinPQ<Move> movesPQ) {
+        if (movesPQ.isEmpty()) return null;
+
+        Move bestMove = movesPQ.delMin();
+
+        if (bestMove.board.isGoal()) {
+            return bestMove;
+        } else {
             Iterable<Board> neighbors = bestMove.board.neighbors();
             for (Board neighbor : neighbors) {
                 if (bestMove.previous == null || !neighbor.equals(bestMove.previous.board)) {
-                    minMovesPQ.insert(new Move(neighbor, bestMove));
+                    movesPQ.insert(new Move(neighbor, bestMove));
                 }
             }
-
-            bestMove = minMovesPQ.delMin();
-            this.lastMove = bestMove;
         }
+        return null;
     }
 
     /**
@@ -67,14 +89,20 @@ public class Solver {
      * Min number of moves to solve initial board; -1 if unsolvable
      */
     public int moves() {
-        return isSolvable() ? this.solution.size() - 1 : -1;
+        return isSolvable() ? this.lastMove.moves : -1;
     }
 
     /**
      * Sequence of boards in a shortest solution; null if unsolvable
      */
     public Iterable<Board> solution() {
-        return this.solution;
+        if (!isSolvable()) return null;
+        Stack<Board> solutionStack = new Stack<>();
+        while (lastMove != null) {
+            solutionStack.push(lastMove.board);
+            lastMove = lastMove.previous;
+        }
+        return solutionStack;
     }
 
     /**
