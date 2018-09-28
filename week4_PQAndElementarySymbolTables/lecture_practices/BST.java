@@ -106,11 +106,51 @@ public class BST<Key extends Comparable<Key>, Value> {
         return q;
     }
 
+    /**
+     * In-order traversal that takes O(n) space and time.
+     * @param q
+     * @param node
+     */
     private void inOrder(Queue<Key> q, Node node) {
         if (node == null) return;
         inOrder(q, node.left);
         q.enqueue(node.key);
         inOrder(q, node.right);
+    }
+
+    /**
+     * In-order traversal that takes O(1) space and O(n) time.
+     * Ref: https://www.youtube.com/watch?v=wGXB9OWhPTg
+     * @param root
+     */
+    public void morrisTraversal(Node root) {
+        Node cur = root;
+        while (cur != null) {
+            if (cur.left == null) {
+              visit(cur);
+              cur = cur.right;
+            } else {
+                // find the rightmost node on the left subtree
+                Node rightMost = cur.left;
+                while (rightMost.right != null && rightMost.right != cur) {
+                    rightMost = rightMost.right;
+                }
+                if (rightMost == null) {
+                    rightMost.right = cur;
+                    //visit(cur);
+                    cur = cur.left;
+                } else {
+                    // left are all visited, move to the right after visit the current
+                    rightMost.right = null;
+                    visit(cur);
+                    cur = cur.right;
+                }
+            }
+        }
+    }
+
+    private void visit(Node node) {
+        System.out.println(node.key);
     }
 
     /**
@@ -129,8 +169,7 @@ public class BST<Key extends Comparable<Key>, Value> {
         int comp = key.compareTo(root.key);
         if (comp == 0) return root;
         else if (comp < 0) {
-            return floor(root.left, key);
-        }
+            return floor(root.left, key); }
         Node biggerNode = floor(root.right, key);
         if (biggerNode != null) return biggerNode;
         else return root;
