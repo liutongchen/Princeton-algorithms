@@ -34,4 +34,33 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         }
         return null;
     }
+
+    private Node rotateLeft(Node h) {
+        assert isRed(h.right);
+        Node x = h.right;
+        h.right = x.left;
+        x.left = h;
+        x.color = h.color; // color is the line color pointing to a node by its parent
+        h.color = RED;
+        return x;
+    }
+
+    private Node rotateRight(Node h) {
+        assert isRed(h.left);
+        Node x = h.left;
+        h.left = x.right;
+        x.right = h;
+        x.color = h.color;
+        h.color = RED;
+        return x;
+    }
+
+    private void flipColors(Node h) {
+        assert isRed(h.left);
+        assert isRed(h.right);
+        assert !isRed(h);
+        h.color = RED;
+        h.left.color = BLACK;
+        h.right.color = BLACK;
+    }
 }
