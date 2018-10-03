@@ -1,3 +1,8 @@
+/**
+ * Created by Liutong Chen on 10/1/2018
+ */
+
+// This is left-leaning red-black tree.
 public class RedBlackBST<Key extends Comparable<Key>, Value> {
     private static final boolean RED = true;
     private static final boolean BLACK = false;
